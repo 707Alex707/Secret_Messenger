@@ -17,7 +17,7 @@ form.addEventListener('submit', function(e) {
 
 socket.on('message', function(msg) {
     var item = document.createElement('li');
-    item.textContent = msg.text;
+    item.textContent = msg.user + ": " + msg.text;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
 });
@@ -25,8 +25,14 @@ socket.on('message', function(msg) {
 function login(){
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const name = urlParams.get('name');
     const room = urlParams.get('room');
+    let name = sessionStorage.getItem("username");
+
+    //Set random name if none set
+    if (name == null){
+        let names = ["Smith", "Wright", "Lloyd", "Fowler", "Harper", "Elliott", "Farrell", "Allen", "Wells", "Owens", "Anderson"];
+        name = names[getRndInteger(0, names.length)]
+    }
 
     socket.emit('login', { name, room }, error => {
         if (error){
@@ -36,4 +42,8 @@ function login(){
             loggedIn = true;
         }
     });
+}
+
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
 }
