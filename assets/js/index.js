@@ -24,3 +24,26 @@ document.getElementById("joinRoom").addEventListener("click", function() {
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
 }
+
+generateRSA(2048);
+
+/*document.getElementById("test").addEventListener("click", function() {
+    import_RSA_Public_Key(sessionStorage.getItem("rsaPublicKey"));
+    jwk = imported_RSA_Keys[0];
+    console.log(jwk)
+
+    encryptMsgRSA(jwk, "Hello how are you").then(msg => {
+        console.log("Cipher Text: " + msg);
+
+        let privateKey = import_RSA_Private_Key(JSON.parse(sessionStorage.getItem("rsaPrivateKey")));
+        privateKey.then(jwk2 => {
+            decryptMsgRSA(jwk2, msg).then(plainText => {
+                console.log("Plain text: " + plainText)
+            });
+
+        });
+    });
+});*/
+
+
+
