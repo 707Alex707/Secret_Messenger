@@ -29,11 +29,7 @@ io.on('connection', (socket) => {
         const { user, error } = addUser(socket.id, name, room, rsaPublicKey)
         if (error) return callback(error)
         socket.join(user.room)
-
-        //Send the updated user list to everyone but don't include recipient user
-        for (let i = 0; i < getUsers(user.room).length - 1; i++) {
-            io.to(getUsers(user.room)[i].id).emit('userList', getUsersInRoomExclusive(getUsers(user.room)[i]))
-        }
+        sendUserListUpdate(user)
         //socket.broadcast.to(user.room).emit('userList',getUsers(user.room)) //Everyone but joiner
         callback()
     })
@@ -49,11 +45,16 @@ io.on('connection', (socket) => {
     })
 
     socket.on("disconnect", () => {
-        console.log("User disconnected");
         const user = deleteUser(socket.id)
         if (user) {
-            io.in(user.room).emit('notification', { title: 'Someone just left', description: `${user.name} just left the room` })
-            io.in(user.room).emit('users', getUsers(user.room))
+            sendUserListUpdate(user)
         }
     })
 });
+
+//Send the updated user list to everyone but don't include recipient user
+function sendUserListUpdate(user){
+    for (let i = 0; i < getUsers(user.room).length; i++) {
+        io.to(getUsers(user.room)[i].id).emit('userList', getUsersInRoomExclusive(getUsers(user.room)[i]))
+    }
+}
