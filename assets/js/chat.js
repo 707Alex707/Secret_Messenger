@@ -1,10 +1,12 @@
 var loggedIn = false;
 var socket = io();
 var userList;
+var userName;
 
 //Get user list
 socket.on('userList', function(users) {
     userList = users;
+    updateUserList()
 });
 
 //Generate RSA keys then login
@@ -22,6 +24,7 @@ var messages = document.getElementById('messages');
 var form = document.getElementById('form');
 var input = document.getElementById('input');
 var algorithm = document.getElementById('algorithm');
+var userListDiv = document.getElementById('userListDiv');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -84,16 +87,17 @@ function login(){
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const room = urlParams.get('room');
-        var name = sessionStorage.getItem("username");
+        userName = sessionStorage.getItem("username");
         const rsaPublicKey = sessionStorage.getItem("rsaPublicKey");
 
         //Set random name if none set
-        if (name == null){
+        if (userName == null){
             let names = ["Smith", "Wright", "Lloyd", "Fowler", "Harper", "Elliott", "Farrell", "Allen", "Wells", "Owens", "Anderson"];
-            name = names[getRndInteger(0, names.length)]
+            userName = names[getRndInteger(0, names.length)]
         }
 
         //Login
+        let name = userName;
         socket.emit('login', { name, room, rsaPublicKey}, error => {
             if (error){
                 window.alert("Login failure");
@@ -121,9 +125,23 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
 }
 
+
+//UI
 function appendMessage(message){
     var item = document.createElement('li');
     item.textContent = message
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
+}
+
+//UI
+function updateUserList(){
+    let html;
+
+    html = `<table><tr><th>Users</th></tr><tr><td>${userName} (You)</td></tr>`
+    for (let i = 0; i < userList.length; i++) {
+        html += `<tr><td>${userList[i].name}</td></tr>`
+    }
+    html += "</table>"
+    userListDiv.innerHTML = html
 }
