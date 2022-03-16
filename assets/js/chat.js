@@ -13,6 +13,8 @@ socket.on('userList', function(users) {
 generateRSA(2048).then(() =>{
     login().then(() => {
         getUsersInRoom();
+    }).catch(error => {
+        console.log(error);
     });
 });
 
@@ -35,8 +37,7 @@ form.addEventListener('submit', function(e) {
         } else if (algorithm.value === "rsa") {
             try{
                 //Display the message locally
-                var name = sessionStorage.getItem("username");
-                appendMessage(name + ": " + input.value)
+                appendMessage(userName + ": " + input.value)
 
                 //Send an encrypted rsa message
                 for (let i = 0; i < userList.length; i++) {
@@ -101,14 +102,12 @@ function login(){
         socket.emit('login', { name, room, rsaPublicKey}, error => {
             if (error){
                 window.alert("Login failure");
-                console.log(error);
-                reject("Login failure");
+                reject("Login failure: " + error);
             } else {
+                resolve();
                 loggedIn = true;
             }
         })
-
-        resolve();
     });
 
 }
