@@ -3,34 +3,60 @@
 var imported_RSA_Keys = Array();
 
 function generateRSA(keySize){
-    let rsaPublicKey = sessionStorage.getItem("rsaPublicKey");
-    let rsaPrivateKey = sessionStorage.getItem("rsaPrivateKey");
+    let waitGroup = []
 
-    //Check if keys are set
-    if (rsaPublicKey != null && rsaPrivateKey != null){
-        return;
-    }
+    return new Promise(function(resolve, reject) {
+        let rsaPublicKey = sessionStorage.getItem("rsaPublicKey");
+        let rsaPrivateKey = sessionStorage.getItem("rsaPrivateKey");
 
-    window.crypto.subtle.generateKey(
-        {
-            name: "RSA-OAEP",
-            modulusLength: keySize, //e.g 1024, 2048, 3072, 4096
-            publicExponent: new Uint8Array([1, 0, 1]),
-            hash: "SHA-256",
-        },
-        true,
-        ["encrypt", "decrypt"]
-    ).then((keyPair) => {
-        window.crypto.subtle.exportKey("jwk", keyPair.publicKey).then(function (key) {
-            sessionStorage.setItem("rsaPublicKey", JSON.stringify(key));
-            console.log(JSON.stringify(key));
-        });
+        //Check if keys are set
+        if (rsaPublicKey != null && rsaPrivateKey != null){
+            resolve()
+            return;
+        }
 
-        window.crypto.subtle.exportKey("jwk", keyPair.privateKey).then(function (key) {
-            sessionStorage.setItem("rsaPrivateKey", JSON.stringify(key));
-            console.log(JSON.stringify(key));
+        //Generate keys
+        window.crypto.subtle.generateKey(
+            {
+                name: "RSA-OAEP",
+                modulusLength: keySize, //e.g 1024, 2048, 3072, 4096
+                publicExponent: new Uint8Array([1, 0, 1]),
+                hash: "SHA-256",
+            },
+            true,
+            ["encrypt", "decrypt"]
+        ).then((keyPair) => {
+            waitGroup.push(
+                new Promise(function (resolve2, reject2) {
+                    window.crypto.subtle.exportKey("jwk", keyPair.publicKey).then(function (key) {
+                        sessionStorage.setItem("rsaPublicKey", JSON.stringify(key));
+                        console.log(JSON.stringify(key));
+                        resolve2()
+                    })
+                })
+            );
+
+            waitGroup.push(
+                new Promise(function (resolve3, reject3) {
+                    window.crypto.subtle.exportKey("jwk", keyPair.privateKey).then(function (key) {
+                        sessionStorage.setItem("rsaPrivateKey", JSON.stringify(key));
+                        console.log(JSON.stringify(key));
+                        resolve3()
+                    })
+                })
+            );
+            Promise.all(waitGroup).then(() => {
+                resolve();
+            })
         });
     });
+}
+
+function runCallback(callback){
+    if (typeof callback === 'function') {
+        console.log("Running callback");
+        callback();
+    }
 }
 
 async function decryptMsgRSA(key, ciphertext){

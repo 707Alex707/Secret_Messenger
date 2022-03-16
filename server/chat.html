@@ -8,11 +8,16 @@
 
 <ul id="messages"></ul>
 <form id="form" action="">
-    <input id="input" autocomplete="off" /><button>Send</button>
+    <label for="input">Message</label><input id="input" autocomplete="off" /><button>Send</button>
+    <label for="algorithm">Algorithm</label><select name="algorithm" id="algorithm">
+        <option value="plain">Plain</option>
+        <option value="rsa">RSA</option>
+    </select>
 </form>
 
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/assets/js/crypto.js"></script>
 <script src="/assets/js/chat.js"></script>
 </body>
 </html>
