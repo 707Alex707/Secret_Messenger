@@ -4,17 +4,13 @@ var userList;
 
 //Get user list
 socket.on('userList', function(users) {
-    console.log(userList);
     userList = users;
 });
 
 //Generate RSA keys then login
 generateRSA(2048).then(() =>{
-    console.log("Keys generated");
     login().then(() => {
-        console.log("Logged in");
         getUsersInRoom();
-        console.log("Got users");
     });
 });
 
@@ -66,8 +62,6 @@ socket.on('message', function(msg) {
 });
 
 socket.on('receiveDirectMessage', ({ algorithm, message, user}) =>  {
-    console.log("Got msg rsa")
-    console.log(message)
     if (algorithm === "rsa"){
         try {
             console.log("private key")
@@ -86,7 +80,7 @@ socket.on('receiveDirectMessage', ({ algorithm, message, user}) =>  {
 
 
     }
-    console.log("received direct message from " + user + " with  algorithm " + algorithm + " and contents:" + message);
+    console.log("received direct message from " + user + " with  algorithm " + algorithm + " and contents: " + message);
 })
 
 function login(){
