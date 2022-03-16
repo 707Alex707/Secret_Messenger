@@ -38,7 +38,6 @@ form.addEventListener('submit', function(e) {
                 //Send an encrypted rsa message
                 for (let i = 0; i < userList.length; i++) {
                     import_RSA_Public_Key(JSON.parse(userList[i].rsaPublicKey)).then(publicKey => {
-                        console.log(publicKey);
                         encryptMsgRSA(publicKey, input.value).then(cipherText => {
                             console.log("Sent Plain: " + input.value)
                             console.log("Sent: " + cipherText)
@@ -64,11 +63,8 @@ socket.on('message', function(msg) {
 socket.on('receiveDirectMessage', ({ algorithm, message, user}) =>  {
     if (algorithm === "rsa"){
         try {
-            console.log("private key")
-            console.log(JSON.parse(sessionStorage.getItem("rsaPrivateKey")))
             let privateKey = import_RSA_Private_Key(JSON.parse(sessionStorage.getItem("rsaPrivateKey")));
             privateKey.then(jwk => {
-                console.log(jwk)
                 decryptMsgRSA(jwk, message).then(arrayBuff => {
                     plainText = ab2str(arrayBuff)
                     appendMessage(user + ": " + plainText)

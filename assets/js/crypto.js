@@ -27,7 +27,6 @@ function generateRSA(keySize){
                 new Promise(function (resolve2, reject2) {
                     window.crypto.subtle.exportKey("jwk", keyPair.publicKey).then(function (key) {
                         sessionStorage.setItem("rsaPublicKey", JSON.stringify(key));
-                        console.log(JSON.stringify(key));
                         resolve2()
                     })
                 })
@@ -37,7 +36,6 @@ function generateRSA(keySize){
                 new Promise(function (resolve3, reject3) {
                     window.crypto.subtle.exportKey("jwk", keyPair.privateKey).then(function (key) {
                         sessionStorage.setItem("rsaPrivateKey", JSON.stringify(key));
-                        console.log(JSON.stringify(key));
                         resolve3()
                     })
                 })
