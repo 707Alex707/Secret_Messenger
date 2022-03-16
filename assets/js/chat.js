@@ -3,6 +3,12 @@ var socket = io();
 var userList;
 var userName;
 
+var messages = document.getElementById('messages');
+var form = document.getElementById('form');
+var input = document.getElementById('input');
+var algorithm = document.getElementById('algorithm');
+var userListDiv = document.getElementById('userListDiv');
+
 //Get user list
 socket.on('userList', function(users) {
     userList = users;
@@ -17,16 +23,6 @@ generateRSA(2048).then(() =>{
         console.log(error);
     });
 });
-
-
-
-
-
-var messages = document.getElementById('messages');
-var form = document.getElementById('form');
-var input = document.getElementById('input');
-var algorithm = document.getElementById('algorithm');
-var userListDiv = document.getElementById('userListDiv');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
