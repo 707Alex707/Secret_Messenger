@@ -13,7 +13,6 @@ document.getElementById("joinRoom").addEventListener("click", function() {
     }
 
     if (name.length > 0){
-        //window.location.assign("./chat?name=" + encodeURIComponent(name) + "&room=" + room);
         sessionStorage.setItem("username", name);
         window.location.assign("./chat?room=" + room);
 
@@ -27,23 +26,6 @@ function getRndInteger(min, max) {
 
 generateRSA(2048);
 
-/*document.getElementById("test").addEventListener("click", function() {
-    import_RSA_Public_Key(sessionStorage.getItem("rsaPublicKey"));
-    jwk = imported_RSA_Keys[0];
-    console.log(jwk)
-
-    encryptMsgRSA(jwk, "Hello how are you").then(msg => {
-        console.log("Cipher Text: " + msg);
-
-        let privateKey = import_RSA_Private_Key(JSON.parse(sessionStorage.getItem("rsaPrivateKey")));
-        privateKey.then(jwk2 => {
-            decryptMsgRSA(jwk2, msg).then(plainText => {
-                console.log("Plain text: " + plainText)
-            });
-
-        });
-    });
-});*/
 
 
 

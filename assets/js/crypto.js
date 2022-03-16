@@ -1,7 +1,4 @@
 //Examples https://gist.github.com/pedrouid/b4056fd1f754918ddae86b32cf7d803e#rsa-oaep---importkey
-
-var imported_RSA_Keys = Array();
-
 function generateRSA(keySize){
     let waitGroup = []
 
@@ -94,9 +91,6 @@ function import_RSA_Public_Key(key){
         ["encrypt"]
     );
     return publicKeyPromise;
-/*    publicKeyPromise.then(key => {
-        imported_RSA_Keys.push(key);
-    });*/
 }
 
 function import_RSA_Private_Key(key){
@@ -110,8 +104,6 @@ function import_RSA_Private_Key(key){
         true,
         ["decrypt"]
     );
-
-
 }
 
 //Ref https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String

@@ -64,6 +64,7 @@ io.on('connection', (socket) => {
     })
 });
 
+
 //Send the updated user list to everyone but don't include recipient user
 function sendUserListUpdate(user){
     for (let i = 0; i < getUsers(user.room).length; i++) {
