@@ -1,9 +1,11 @@
 var loggedIn = false;
 var socket = io();
+var userList;
 
 //Get user list
-socket.on('userList', function(userList) {
+socket.on('userList', function(users) {
     console.log(userList);
+    userList = users;
 });
 
 //Generate RSA keys then login
@@ -30,26 +32,62 @@ form.addEventListener('submit', function(e) {
     if (input.value && loggedIn) {
         if (algorithm.value === "plain"){
             socket.emit('sendMessage', input.value);
+            input.value = '';
         } else if (algorithm.value === "rsa") {
             try{
-                /*encryptMsgRSA(myKeyPairRSA.publicKey, input.value).then(cipherText => {
-                    socket.emit('sendMessageRSA', cipherText);
-                });*/
+                //Display the message locally
+                var name = sessionStorage.getItem("username");
+                appendMessage(name + ": " + input.value)
+
+                //Send an encrypted rsa message
+                for (let i = 0; i < userList.length; i++) {
+                    import_RSA_Public_Key(JSON.parse(userList[i].rsaPublicKey)).then(publicKey => {
+                        console.log(publicKey);
+                        encryptMsgRSA(publicKey, input.value).then(cipherText => {
+                            console.log("Sent Plain: " + input.value)
+                            console.log("Sent: " + cipherText)
+                            socket.emit("directMessage", {algorithm: "rsa", message: cipherText, socketID : userList[i].id})
+                            input.value = '';
+                        })
+                    })
+                }
             } catch (e){
                 console.log(e);
             }
         }
-        input.value = '';
+
 
     }
 });
 
+//Plain text
 socket.on('message', function(msg) {
-    var item = document.createElement('li');
-    item.textContent = msg.user + ": " + msg.text;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    appendMessage(msg.user + ": " + msg.text)
 });
+
+socket.on('receiveDirectMessage', ({ algorithm, message, user}) =>  {
+    console.log("Got msg rsa")
+    console.log(message)
+    if (algorithm === "rsa"){
+        try {
+            console.log("private key")
+            console.log(JSON.parse(sessionStorage.getItem("rsaPrivateKey")))
+            let privateKey = import_RSA_Private_Key(JSON.parse(sessionStorage.getItem("rsaPrivateKey")));
+            privateKey.then(jwk => {
+                console.log(jwk)
+                decryptMsgRSA(jwk, message).then(arrayBuff => {
+                    plainText = ab2str(arrayBuff)
+                    appendMessage(user + ": " + plainText)
+                })
+            });
+        } catch (e){
+            console.log(e);
+        }
+
+
+    }
+    console.log("received direct message from " + user + " with  algorithm " + algorithm + " and contents:" + message);
+})
 
 function login(){
     return new Promise((resolve, reject) => {
@@ -91,4 +129,11 @@ function getUsersInRoom(){
 
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
+}
+
+function appendMessage(message){
+    var item = document.createElement('li');
+    item.textContent = message
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
 }

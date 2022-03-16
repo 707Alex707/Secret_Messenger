@@ -60,14 +60,14 @@ function runCallback(callback){
 }
 
 async function decryptMsgRSA(key, ciphertext){
-    decrypted = await window.crypto.subtle.decrypt(
+    let decrypted = window.crypto.subtle.decrypt(
         {
             name: "RSA-OAEP"
         },
         key,
         str2ab(ciphertext)
     );
-    return ab2str(decrypted);
+    return decrypted;
 }
 
 async function encryptMsgRSA(key, plaintext){
@@ -82,10 +82,10 @@ async function encryptMsgRSA(key, plaintext){
     return ab2str(ciphertext);
 }
 
-function import_RSA_Public_Key(keyJson){
+function import_RSA_Public_Key(key){
     let publicKeyPromise =  window.crypto.subtle.importKey(
         "jwk",
-        JSON.parse(keyJson),
+        key,
         {
             name: "RSA-OAEP",
             hash: "SHA-256"
@@ -93,9 +93,10 @@ function import_RSA_Public_Key(keyJson){
         true,
         ["encrypt"]
     );
-    publicKeyPromise.then(key => {
+    return publicKeyPromise;
+/*    publicKeyPromise.then(key => {
         imported_RSA_Keys.push(key);
-    });
+    });*/
 }
 
 function import_RSA_Private_Key(key){

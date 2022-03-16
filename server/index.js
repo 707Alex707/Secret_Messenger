@@ -39,6 +39,18 @@ io.on('connection', (socket) => {
         io.in(user.room).emit('message', { user: user.name, text: message });
     })
 
+    socket.on('directMessage', ({ message, algorithm, socketID}) => {
+        try {
+            const recipient = getUser(socketID);
+            const sender = getUser(socket.id)
+            if (getUsersInRoomExclusive(sender).some(filterUser => filterUser === recipient) === true){
+                io.to(socketID).emit('receiveDirectMessage', {algorithm: algorithm, message: message, user: sender.name})
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    })
+
     socket.on('getUsers', message => {
         const callingUser = getUser(socket.id)
         socket.emit('userList', getUsersInRoomExclusive(callingUser));
