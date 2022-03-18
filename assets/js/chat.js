@@ -18,7 +18,7 @@ socket.on('userList', function(users) {
 //Generate RSA keys then login
 generateRSA(2048).then(() =>{
     login().then(() => {
-        getUsersInRoom();
+        //Do stuff
     }).catch(error => {
         console.log(error);
     });
@@ -106,14 +106,6 @@ function login(){
         })
     });
 
-}
-
-function getUsersInRoom(){
-    return socket.emit('getUsers', error => {
-        if (error){
-            console.log(error);
-        }
-    });
 }
 
 function getRndInteger(min, max) {

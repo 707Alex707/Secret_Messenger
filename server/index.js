@@ -51,12 +51,6 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('getUsers', message => {
-        const callingUser = getUser(socket.id)
-        if(!callingUser) return;
-        socket.emit('userList', getUsersInRoomExclusive(callingUser));
-    })
-
     socket.on("disconnect", () => {
         const user = deleteUser(socket.id)
         if (user) {
