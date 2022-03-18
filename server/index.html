@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <title>Secret Messenger</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
     <div class="center">
+        <div id="center2">
         <h1>Secret Messenger</h1>
         <h2>Chat in secret</h2>
 
-        <div>Name</div>
-        <input id="nameInput" type='text' />
-
-        <div>Room</div>
-        <div>
-            <input id="roomInput" type='text' />
+        <div id="nameDiv">
+        <i class="fa fa-user icon"></i>
+        <input id="nameInput" type='text' placeholder="Name"/>
         </div>
+        <div id = "roomDiv">
+        <i class='fa fa-id-badge'></i>
+        <input id="roomInput" type='text' placeholder="Room"/>
         <button id="joinRoom">Chat Now!</button>
+        </div>
+        </div>
     </div>
 
 
