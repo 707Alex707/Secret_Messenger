@@ -127,7 +127,7 @@ function appendMessage(message){
     item.className = "bubble";
     item.textContent = message
     messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+    item.scrollIntoView();
 }
 
 //UI
