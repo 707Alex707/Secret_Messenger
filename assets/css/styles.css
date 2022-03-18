@@ -19,6 +19,22 @@ body {
 .container {
   margin-top: 50px;
 }
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  background: white;
+  border-radius: 10px;
+}
+.center h1,
+.center h2 {
+  text-align: center;
+  margin: 10px;
+}
+.center div {
+  margin: auto;
+  width: 50%;
+}
 .messages {
   position: absolute;
   background: #F9FBFF;
@@ -118,7 +134,7 @@ body {
   padding: 20px;
 }
 .incoming .bubble {
-  background: #b2b2b2;
+  background: #848484;
 }
 .typing {
   position: absolute;
@@ -150,7 +166,7 @@ body {
   position: relative;
   margin-bottom: 5px;
   color: #F9FBFF;
-  font-size: 0.7em;
+  font-size: 0.9em;
   padding: 10px 10px 10px 12px;
   border-radius: 20px;
   width: fit-content;
@@ -181,7 +197,7 @@ body {
 .left {
   left: 0px;
 }
-input {
+#input {
   padding: 7px;
   width: 80%;
   left: 2%;
@@ -192,10 +208,10 @@ input {
   background: #F9FBFF;
   color: #030303;
 }
-input::placeholder {
+#input::placeholder {
   color: #777777;
 }
-input:focus {
+#input:focus {
   outline: 0;
 }
 select {
