@@ -1,0 +1,299 @@
+
+@font: sans-serif;
+
+@primary: #79C7C5;
+@secondary: #A1E2D9;
+@white: #F9FBFF;
+@dark: #777777;
+@textColor: #030303;
+
+html {
+  display: grid;
+  min-height: 100%;
+}
+
+body {
+  display: grid;
+  background: @primary;
+  font-family: @font;
+}
+
+.row {
+  display: flex;
+}
+
+.column-left {
+  flex: 60%;
+}
+
+.column-right {
+  flex: 40%;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.messages {
+  position: absolute;
+  background: @white;
+  opacity: 0.5;
+  width: 30%;
+  height: 70%;
+  top: 2.5%;
+  left: 5%;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -5px 5px 10px rgba(@dark, .5);
+}
+
+/*chat messages */
+
+.chatbox {
+  position: absolute; 
+  left: 20%;
+  height: 75%;
+  width: 40%;
+  border-radius: 10px;
+}
+
+.top-bar {
+  width: 100%;
+  height: 60px;
+  background: @white;
+  border-radius: 10px 0 0 0;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(to bottom left, @primary 20%, @secondary 100%);
+  border-radius: 50%;
+  position: absolute;
+  top: 11px;
+  left: 15px;
+  p {
+    color: @white;
+    margin: 7px 12px;
+  }
+}
+
+.name {
+  position: absolute;
+  top: 22px;
+  text-transform: uppercase;
+  color: @dark;
+  font-size: .8em;
+  letter-spacing: 2px;
+  font-weight: 500;
+  left: 60px;
+}
+
+.menu {
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  width: 10px;
+  height: 20px;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+    transition: all .3s ease-in;
+  }
+}
+
+.icons {
+  position: absolute;
+  color: @secondary;
+  padding: 10px;
+  top: 5px;
+  right: 21px;
+  cursor: pointer;
+  .fas {
+    padding: 5px;
+    opacity: 0.8;
+    &:hover {
+      transform: scale(1.1);
+      transition: all .3s ease-in;
+    }
+  }
+}
+
+.dots {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: @primary;
+  box-shadow: 0px 7px 0px @primary, 0px 14px 0px @primary;
+}
+
+.middle {
+  position: absolute;
+  background: @white;
+  width: 100%;
+  opacity: 0.85;
+  top: 60px;
+  height: 85%;
+  overflow-y: auto;
+}
+
+.incoming {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  padding: 20px;
+  .bubble {
+    background: lighten(@dark, 23%);
+  }
+}
+
+.typing {
+  position: absolute;
+  top: 67%;
+  left: 20px;
+  .bubble {
+    background: lighten(@dark, 45%);
+    padding: 8px 13px 9px 13px;
+  }
+}
+
+
+.ellipsis {
+  width: 5px;
+  height: 5px;
+  display: inline-block;
+  background: lighten(@dark, 25%);
+  border-radius: 50%;
+  animation: bounce 1.3s linear infinite;
+}
+
+.one {
+  animation-delay: 0.6s;
+}
+.two {
+  animation-delay: 0.5s;
+}
+.three {
+  animation-delay: 0.8s;
+}
+
+.bubble {
+  position: relative;
+  margin-bottom: 5px;
+  color: @white;
+  font-size: 0.7em;
+  padding: 10px 10px 10px 12px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.lower {
+  margin-top: 45px;
+}
+
+.outgoing {
+  position: absolute;
+  padding: 20px;
+  right: 0;
+  top: 15%;
+  width: 50%;
+  height: 100%;
+  .bubble {
+    background: @primary;
+    float: right;
+  }
+}
+
+
+.bottom-bar {
+  position: absolute;
+  width: 100%;
+  height: 55px;
+  bottom: 0;
+  background: @white;
+  border-radius: 0 0 0 10px;
+}
+
+.left {
+  left: 0px;
+}
+
+input {
+  padding: 7px;
+  width: 80%;
+  left: 2%;
+  position: absolute;
+  border: 0;
+  top: 5px;
+  height: 30px;
+  background: @white;
+  color: @textColor;
+
+}
+
+input::placeholder {
+  color: @dark;
+}
+
+input:focus {
+  outline: 0;
+}
+
+select{
+  font-family: @font;
+  padding: 7px;
+  float: right;
+  margin-top: 10px;
+  margin-right: 5px;
+  background: @white;
+  color: @textColor;
+  border: 1px solid @textColor;
+  margin-right: 10px;
+}
+
+.user-container{
+  width: 25%;
+  .top-bar {
+    width: 100%;
+    height: 60px;
+    background: @white;
+    border-radius: 0 10px 0 0;
+  }
+
+  #userListDiv{
+    background: @white;
+    opacity: 0.90;
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-left: 10px;
+    height: 623px;
+    td{
+      font-family: @font;
+      color: @dark;
+    }
+  }
+
+}
+
+
+
+// /* Scroll 6 */
+// .middle::-webkit-scrollbar {
+//   width: 12px;
+//   height: 3px;
+// }
+// .middle::-webkit-scrollbar-track {
+//   border-radius: 10px;
+//   background-color: rgba(0, 0, 0, 0.4);
+// }
+// .middle::-webkit-scrollbar-thumb {
+//   background-color: #aab74d;
+//   background-image:-webkit-linear-gradient(rgba(255,255,255,.3) 20%,transparent 20%,transparent 40%,rgba(255, 255, 255, 0.3) 40%,rgba(255,255,255,.3) 60%,transparent 60%,transparent 80%,rgba(255, 255, 255, 0.3) 80%);
+//   border-radius: 10px;
+// }
+
+@keyframes bounce {
+  30% { transform: translateY(-2px); }
+  60% { transform: translateY(0px); }
+  80% { transform: translateY(2px); }
+  100% { transform: translateY(0px); opacity: 0.5;  }
+}

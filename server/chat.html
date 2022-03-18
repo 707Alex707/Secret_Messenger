@@ -1,25 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Secret Messenger Chat</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
+
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="column-left">
+                <div class="chatbox">
+                    <div class="top-bar">
+                        <div class="avatar">
+                            <p>?</p>
+                        </div>
+                        <div class="name">Secret Messenger</div>
+                    </div>
 
-<ul id="messages"></ul>
-<form id="form" action="">
-    <label for="input">Message</label><input id="input" autocomplete="off" /><button>Send</button>
-    <label for="algorithm">Algorithm</label><select name="algorithm" id="algorithm">
-        <option value="plain">Plain</option>
-        <option value="rsa">RSA</option>
-    </select>
-</form>
+                    <div class="middle">
+                        <div class="incoming">
+                            <div id="messages"></div>
+                        </div>
+                    </div>
 
-<div id="userListDiv"></div>
+                    <div class="bottom-bar">
+                        <form id="form" action="">
+                            <input id="input" autocomplete="off" placeholder="Type a message..." />
+                            <select name="algorithm" id="algorithm">
+                                <option value="plain">Plain</option>
+                                <option value="rsa">RSA</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column-right">
+                <div class="user-container">
+                    <div class="top-bar"></div>
+                    <div id="userListDiv"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="/assets/js/crypto.js"></script>
-<script src="/assets/js/chat.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/assets/js/crypto.js"></script>
+    <script src="/assets/js/chat.js"></script>
 </body>
+
 </html>

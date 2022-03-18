@@ -123,7 +123,8 @@ function getRndInteger(min, max) {
 
 //UI
 function appendMessage(message){
-    var item = document.createElement('li');
+    var item = document.createElement('div');
+    item.className = "bubble";
     item.textContent = message
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
@@ -133,7 +134,7 @@ function appendMessage(message){
 function updateUserList(){
     let html;
 
-    html = `<table><tr><th>Users</th></tr><tr><td>${userName} (You)</td></tr>`
+    html = `<table><tr><th>Members - ${userList.length + 1}</th></tr><tr><td>${userName} (You)</td></tr>`
     for (let i = 0; i < userList.length; i++) {
         html += `<tr><td>${userList[i].name}</td></tr>`
     }
