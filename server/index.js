@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
             const recipient = getUser(socketID);
             const sender = getUser(socket.id)
             if (getUsersInRoomExclusive(sender).some(filterUser => filterUser === recipient) === true){
-                io.to(socketID).emit('receiveDirectMessage', {algorithm: algorithm, message: message, user: sender.name})
+                io.to(socketID).emit('receiveDirectMessage', {algorithm: algorithm, message: message, user: sender.name, senderID: socket.id})
             }
         } catch (e) {
             console.log(e)

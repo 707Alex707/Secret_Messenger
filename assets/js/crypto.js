@@ -47,6 +47,17 @@ function generateRSA(keySize){
     });
 }
 
+function generateAES(){
+    return window.crypto.subtle.generateKey(
+        {
+            name: "AES-CBC",
+            length: 128, //can be  128, 192, or 256
+        },
+        true, //whether the key is extractable (i.e. can be used in exportKey)
+        ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+    )
+}
+
 function runCallback(callback){
     if (typeof callback === 'function') {
         console.log("Running callback");
@@ -64,6 +75,34 @@ async function decryptMsgRSA(key, ciphertext){
     );
     return decrypted;
 }
+
+async function decryptMsgAES(key, iv, data){
+    let decrypted = window.crypto.subtle.decrypt(
+        {
+            name: "AES-CBC",
+            iv: iv, //The initialization vector you used to encrypt
+        },
+        key, //from generateKey or importKey above
+        data //ArrayBuffer of the data
+    )
+    return decrypted;
+}
+
+async function encryptMsgAES(key, iv , data){
+    let encrypted = window.crypto.subtle.encrypt(
+        {
+            name: "AES-CBC",
+            //Don't re-use initialization vectors!
+            //Always generate a new iv every time your encrypt!
+            iv: iv,
+        },
+        key, //from generateKey or importKey above
+        str2ab(data) //ArrayBuffer of data you want to encrypt
+    )
+    return encrypted;
+}
+
+
 
 async function encryptMsgRSA(key, plaintext){
     let ciphertext = await window.crypto.subtle.encrypt(
@@ -91,6 +130,18 @@ function import_RSA_Public_Key(key){
     return publicKeyPromise;
 }
 
+function import_AES_key(key){
+    return window.crypto.subtle.importKey(
+        "jwk", //can be "jwk" or "raw"
+        key,
+        {
+            name: "AES-CBC",
+        },
+        true, //whether the key is extractable (i.e. can be used in exportKey)
+        ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+    )
+}
+
 function import_RSA_Private_Key(key){
     return window.crypto.subtle.importKey(
         "jwk",
@@ -102,6 +153,18 @@ function import_RSA_Private_Key(key){
         true,
         ["decrypt"]
     );
+}
+
+function export_AES_key(key){
+    return window.crypto.subtle.exportKey(
+        "jwk", //can be "jwk" or "raw"
+        key,
+        {
+            name: "AES-CBC",
+        },
+        true, //whether the key is extractable (i.e. can be used in exportKey)
+        ["encrypt", "decrypt"] //can be "encrypt", "decrypt", "wrapKey", or "unwrapKey"
+    )
 }
 
 //Ref https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
