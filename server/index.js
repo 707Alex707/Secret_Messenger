@@ -48,8 +48,8 @@ app.use('/public', express.static('public'));
 
 //Create https server
 let httpsServer = require('https').createServer(sslConfig.options, app)
-httpsServer.listen(8443, function () {
-    console.log('Server listening on port 8443')
+httpsServer.listen(443, function () {
+    console.log('Server listening on port 443')
 })
 
 //Socket IO user message handling
